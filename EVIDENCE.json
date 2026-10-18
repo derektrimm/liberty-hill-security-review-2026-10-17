@@ -31,11 +31,20 @@
     "certificate_valid_from_utc": "2026-10-16T14:46:47Z",
     "certificate_valid_to_utc": "2026-10-19T14:46:47Z",
     "online_revocation": "untested",
-    "windows_native_trust_policy": "installer: Valid; extracted main executable: untested",
+    "windows_native_trust_policy": "installer: Valid; extracted main executable: Valid",
     "installer_native_windows": {
       "captured_windows_clock_utc": "2026-10-18T01:33:11.6782107Z",
       "status": "Valid",
       "signature_type": "Authenticode",
+      "signer": "Liberty Hill Studios LLC",
+      "signer_certificate_sha1_thumbprint": "384EE3AF17F27295A8467B10DA1A6DA407CD9863",
+      "timestamp_signer": "Microsoft Public RSA Time Stamping Authority",
+      "fresh_revocation_retrieval_independently_attested": false,
+      "method": "static Get-AuthenticodeSignature on trusted Windows host; target not executed"
+    },
+    "main_native_windows": {
+      "captured_windows_clock_utc": "2026-10-18T18:36:57.8230022Z",
+      "status": "Valid",
       "signer": "Liberty Hill Studios LLC",
       "signer_certificate_sha1_thumbprint": "384EE3AF17F27295A8467B10DA1A6DA407CD9863",
       "timestamp_signer": "Microsoft Public RSA Time Stamping Authority",
@@ -107,9 +116,28 @@
     "target_accounts_used": 0,
     "test_sessions_created": 0,
     "lab_created": true,
-    "lab_disposal": "pending: laptop unreachable; VM and lab-file deletion not verified",
+    "lab_disposal": "pending: offline VM remains in use for Windows setup",
     "lab_summary": "LAB-VALIDATION.md",
     "sandboxie_installed": false,
-    "runtime_checks_status": "untested: guest setup failed, then host became unreachable"
-  }
+    "runtime_checks_status": "untested: Windows setup in progress; guest and Sandboxie containment not yet verified",
+    "status_as_of_utc": "2026-10-18T19:27:00Z"
+  },
+  "native_component_inventory": {
+    "files": 38,
+    "bytes": 704848576,
+    "embedded_signatures_verified_offline": 71,
+    "strict_timestamp_verification": true,
+    "fresh_revocation_retrieval": false,
+    "native_windows_policy_for_all_components": false,
+    "private_inventory_sha256": "b172153f2b0d75627b84c21dbc7b7a8b9e32e41d9812ef78d06aabe4c8eb337e",
+    "tools": {
+      "pefile": "2024.8.26",
+      "signify": "0.8.1"
+    },
+    "scope": "Recorded PE hashes, version resources where present, embedded signatures and certificate chains; advisory reachability not established."
+  },
+  "assessment_dates_local": [
+    "2026-10-17",
+    "2026-10-18"
+  ]
 }

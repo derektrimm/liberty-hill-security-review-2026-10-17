@@ -1,10 +1,10 @@
 # Liberty Hill Studios security review
 
-Static and passive assessment of the Liberty Hill Studios launcher and website, authorized by owner Derek Trimm on October 17, 2026. Evidence was collected on October 18 UTC, October 17 in America/Chicago.
+Static and passive assessment of the Liberty Hill Studios launcher and website, authorized by owner Derek Trimm on October 17, 2026. Evidence was collected on October 18 UTC, spanning October 17 and 18 in America/Chicago.
 
-**Status: static and passive review completed within the stated scope. A disposable Windows VM was provisioned on the owner's Windows laptop, but Windows startup did not reach a verified test environment. Target runtime and exploit validation remain untested. This is not a security certification.**
+**Status: static and passive review completed within the stated scope. Windows setup is progressing in a disposable VM on the owner's laptop. Guest readiness and Sandboxie containment are still pending. Target runtime and exploit validation remain untested. This is not a security certification.**
 
-The reviewed official Windows installer is version **6.17.62**. Its SHA-256 matches the signed update feed. Offline checks verified the feed signature and the timestamped Authenticode signatures on both the installer and its main executable. The Windows laptop also returned **Valid** for the installer's native Authenticode check, without executing it. Forty-seven packaged application code files matched the corresponding release source byte for byte. These checks establish artifact identity and integrity, not safe behavior.
+The reviewed official Windows installer is version **6.17.62**. Its SHA-256 matches the signed update feed. Offline checks verified the feed signature and the timestamped Authenticode signatures on both the installer and its main executable. The Windows laptop returned **Valid** for native Authenticode checks on both the installer and main executable, without executing them. An extended static inventory verified 71 embedded signatures across 38 native components offline; fresh revocation retrieval was not independently attested. Forty-seven packaged application code files matched the corresponding release source byte for byte. These checks establish artifact identity and integrity, not safe behavior.
 
 Four observations require follow-up: dependency advisory matches, a report-only website content policy, an OAuth defense missing from the reviewed flow, and unused Electron hardening controls. Two additional concerns remain unvalidated. No account takeover, remote code execution, authorization bypass, sandbox escape, or credential theft was demonstrated.
 
