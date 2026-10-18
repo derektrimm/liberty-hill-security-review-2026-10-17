@@ -16,7 +16,7 @@
     "tls_verify_result": 0,
     "redirect_count": 0,
     "matches_signed_feed": true,
-    "executed": false
+    "executed": true
   },
   "store_binary_equivalence": "unverified",
   "signatures": {
@@ -58,7 +58,8 @@
     "runtime_markers": {
       "Electron": "44.4.5",
       "Chromium": "152.0.7977.130",
-      "method": "static ASCII marker scan; no binary execution"
+      "method": "Static markers subsequently confirmed by native execution in the isolated guest",
+      "Node": "24.21.0"
     }
   },
   "application_archive": {
@@ -110,17 +111,39 @@
     "meaning": "Zero demonstrated exploits does not mean zero vulnerabilities."
   },
   "execution": {
-    "containment_verified": false,
-    "target_code_executed": false,
-    "invasive_tests_performed": false,
-    "target_accounts_used": 0,
-    "test_sessions_created": 0,
+    "containment_verified": true,
+    "target_code_executed": true,
+    "invasive_tests_performed": "Disposable local synthetic fixtures only",
+    "real_target_accounts_used": 0,
+    "provider_accounts_used": 0,
+    "synthetic_accounts_and_sessions_used": true,
+    "synthetic_retirement_verified": true,
+    "guest_networking_ever_enabled": false,
     "lab_created": true,
-    "lab_disposal": "pending: offline VM remains in use for Windows setup",
+    "lab_disposal": "Both disposable labs discarded after reviewed evidence export",
+    "sandboxie_installed": "1.18.8 inside disposable Windows guest; discarded with guest",
+    "runtime_checks_status": "Completed within documented offline scope; remaining checks explicitly untested",
+    "status_as_of_utc": "2026-10-18T21:22:30.680318+00:00",
     "lab_summary": "LAB-VALIDATION.md",
-    "sandboxie_installed": false,
-    "runtime_checks_status": "untested: Windows setup in progress; guest and Sandboxie containment not yet verified",
-    "status_as_of_utc": "2026-10-18T19:27:00Z"
+    "temporary_console_and_media_removed": true,
+    "disposal_evidence_fingerprints": [
+      {
+        "label": "kvm-lab-disposal",
+        "sha256": "964f75e8b8ef47d2292cd8942bf4e998c2dcf31661c2794145a3175f2ba3d45e"
+      },
+      {
+        "label": "windows-lab-disposal-final",
+        "sha256": "b05964c20ae50959667b45179272ed738ab93a9c2ffc3d5f926b560b8da8c147"
+      },
+      {
+        "label": "windows-review-hypervisor-removal",
+        "sha256": "a78adca78b3d525a63bdc392205c1e172de0255eeda8d5b5f10991ec215939ec"
+      },
+      {
+        "label": "local-lab-cleanup",
+        "sha256": "efbe716d98c0ab28aa092f68e74efec7d9c8c90816f0859bd58042787ee6ba2f"
+      }
+    ]
   },
   "native_component_inventory": {
     "files": 38,
@@ -139,5 +162,79 @@
   "assessment_dates_local": [
     "2026-10-17",
     "2026-10-18"
-  ]
+  ],
+  "runtime_validation": {
+    "launcher_module_groups": {
+      "passed": 17,
+      "observed": 2,
+      "untested": 1,
+      "identityFiles": 52
+    },
+    "native_electron_groups": {
+      "passed": 6,
+      "observed": 1,
+      "version": "44.4.5",
+      "chromium": "152.0.7977.130",
+      "embeddedNode": "24.21.0"
+    },
+    "website_baseline_cases": 38,
+    "website_protective_cases": 37,
+    "website_context_observations": 1,
+    "negative_controls_detected": 2,
+    "uninstall_virtual_removal_verified": true,
+    "selected_private_report_fingerprints": [
+      {
+        "label": "launcher-module-runtime-final",
+        "sha256": "4062696b12084962e522c37cf4964ff2c249a24ee7b3c3a06029542a686af02c"
+      },
+      {
+        "label": "native-probe-write",
+        "sha256": "01570f9beca7b8967333600be70ece6fcd35c981ad5c6c10a81ce481935fb744"
+      },
+      {
+        "label": "native-probe-restore",
+        "sha256": "c862e017c8ef9aedb4a988ae8ff2f16d34faa87bc68416ec6652c91b237bcd7f"
+      },
+      {
+        "label": "native-probe-production",
+        "sha256": "dd502a47ab90da5ccd463c6ed733b2979b183701b3fc63b67b0126b51754f92d"
+      },
+      {
+        "label": "website-runtime",
+        "sha256": "5a2d5140fa0b0f870a19f4d5d328a512f74a224da385b5e962c88f1bb33d1ef3"
+      },
+      {
+        "label": "website-runtime-direct",
+        "sha256": "ecf4daef23f63187b77ac6e73827bed1758fb34782e93eb898af861b26bf3072"
+      },
+      {
+        "label": "direct-oauth-callback-context",
+        "sha256": "18b0bad844fa1a64773d320d98723fb7a9e86e97a89329babf1202d13aaf0fa2"
+      },
+      {
+        "label": "direct-pairing-baseline",
+        "sha256": "db7e8711ae05e024fe25c26398f95c84dc17b23c5bb92b628d8dae6aa131a1ce"
+      },
+      {
+        "label": "direct-pairing-proof-guard-removed",
+        "sha256": "fd8a234926ded966d53f7d4ca028bcb74a6681dd05e31a41a47eb6d0fcdd570d"
+      },
+      {
+        "label": "direct-pairing-restored",
+        "sha256": "d89f49b29ddee818854c34407eff1fbea084757fe2f54fef7733a825bfcfe92b"
+      },
+      {
+        "label": "auth-baseline",
+        "sha256": "f2d6c542920a14cc275c60222a06c008e443aa8d658ce86dc51e326c9ff9611f"
+      },
+      {
+        "label": "revocation-guard-removed",
+        "sha256": "7a9c3965c507343bfd38858af3d31cfb621743968746ed94070413de89a679e0"
+      },
+      {
+        "label": "auth-restored",
+        "sha256": "6bbfe55ca4088dfaddfb49dc0683de52ebad5d7374d190b387e7647a50d41ff6"
+      }
+    ]
+  }
 }

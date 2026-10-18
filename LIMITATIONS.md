@@ -1,24 +1,31 @@
 # Coverage and limitations
 
-| Area | Work completed | Untested or unavailable |
+| Area | Completed work | Explicitly untested or unavailable |
 | --- | --- | --- |
-| Official installer | Download, hashes, archive structure, release-code comparison, offline signatures, native Windows installer and main executable signature results `Valid` | Install/uninstall behavior, independently attested fresh revocation retrieval, Store-delivered artifact identity |
-| Electron isolation and IPC | Main window, game and site-pane settings, privileged sender checks and preload API review | Renderer escape, hostile frame behavior, permission prompts, sandbox effectiveness |
-| Updates and file placement | Signed metadata, file hashes, path validation and update handoff review | Tampered-update execution, rollback/freeze scenarios, Windows path and reparse-point cases, extraction failures |
-| Credential storage | OS-backed encryption and failure handling reviewed | Windows DPAPI behavior, filesystem ACLs, process-memory handling, offline sign-out lifecycle |
-| Child processes and listeners | Selected launch arguments, environment filtering, loopback and HTTP boundary review | Actual process tree, socket exposure, firewall behavior, egress and cross-origin validation |
-| OAuth and OpenID | Redirects, state, provider exchange, identity linking and protocol-specific replay review | Owned-account flow execution, account-switch scenarios, provider configuration, provider-side enforcement |
-| Sessions and pairing | Token creation, expiration, proof verification, consumption, revocation and ownership checks | Replay races, logout/revocation end to end, recovery and concurrent requests |
-| Server permissions | Shared auth gates and selected device/build/session ownership paths | Exhaustive role/object matrix, every API route, deployed configuration and databases |
-| Website | Two anonymous response/header samples | Authenticated pages, browser runtime, complete TLS configuration, comprehensive XSS/CSRF/SSRF testing |
-| Dependencies | Four-lockfile inventory and advisory correlation; 38-file native PE hash/version/signature inventory | Deployed SBOM, complete vendor dependency provenance, native advisory reachability, actual exploit reachability |
+| Official installer | Hashes, signatures, release comparison, boxed installation and launch; complete uninstall observed after descendant exit | Exact Store artifact, independently attested fresh revocation, all Windows versions |
+| Electron isolation and IPC | Source review, 50-handler synthetic sender checks, native authorized/foreign renderer checks and actual application composition | Renderer exploit or escape, every pane/permission/frame combination |
+| Updates and placement | Signed feed acceptance, tamper/platform/version-selection refusal, local download integrity, Windows path and CAS checks | Real online updater/install chain, freeze prevention, reparse-point race, Mac ZIP extraction |
+| Credentials | Native protected storage write/read/restart, corrupt data, unavailable encryption and sign-out behavior | Cross-user ACL attack, process-memory extraction, real provider/server revocation |
+| Processes and listeners | Environment filtering; sampled boxed process identity and IPv4 loopback bind; native cross-origin read refusal | Exhaustive child trees, games/vendor processes, public-site browser policies and DNS rebinding |
+| OAuth/OpenID | Local actual-route tests for state, redirects, context switching, identity conflicts and logout; Steam verifier tests | Real provider configuration/enforcement, provider replay, live account linking, end-to-end PKCE implementation |
+| Sessions and pairing | Token integrity/purpose/expiry, revocation, proof, single-use concurrency, cross-account checks, role/suspension changes | Every route/object/role combination, exhaustive merge graph and production concurrency |
+| Website | Pinned source tests and two passive live header samples | Deployed image attestation, authenticated live pages, comprehensive TLS/XSS/CSRF/SSRF testing |
+| Dependencies | Four-lockfile advisory correlation, 38 native PE files and 71 embedded offline signatures | Deployed SBOM, complete native/vendor provenance and advisory exploitability |
 
-## Blocked checks
+## Scope of successful tests
 
-All target execution and invasive validation are currently **untested**, not passed. Windows setup is progressing in the disposable VM, but guest readiness, Sandboxie installation and containment canaries are not yet verified. No target test account or runnable staging service has been created. Provider endpoints were not attacked, replayed or used for account automation. An official dependency checksum endpoint returned HTTP 403; that independent checksum check is unverified and the restriction was not bypassed. Checks requiring provider behavior remain untested.
+The website ran on Windows Node 22.23.3, matching the source container's major version, with synthetic SQLite databases and local provider/cookie fixtures. It was not the deployed Linux image or a full browser-to-provider flow. All 167 source migrations were applied in the full-schema fixtures. The generated Prisma client and Windows engine have a separate provenance limitation: the independent vendor checksum request returned HTTP 403 and was not bypassed.
 
-No benchmark, antivirus scan, penetration-test score, or clean bill of health is claimed. A valid signature authenticates bytes and publisher identity; it does not establish that those bytes are harmless. The report applies to the recorded artifacts and observation times, not later releases.
+Launcher module tests used Node 24.22.0; native tests used the signed executable's Electron 44.4.5, Chromium 152.0.7977.130 and Node 24.21.0. Native fixture entry points exercised unchanged packaged code. One composition test excludes the ordinary main bootstrap and Discord presence. The separate official installation/launch observation is narrower than a full authenticated product playthrough.
+
+The junction fixture could not establish its prerequisite under Sandboxie. It is **untested**, not passed. Initial fixture failures, missing resources, output-capture and process-lifecycle problems were retained and corrected; successful reruns supersede those harness failures only for the stated checks.
+
+## Restrictions
+
+Guest networking was never enabled. Therefore no online egress-policy, host/LAN/VPN reachability, DNS-rebinding or provider-facing validation is claimed. Provider protection blocks and a checksum HTTP 403 were respected. No real-user access, credential guessing, brute force, destructive production change or attack on a provider occurred. No rate-limit or service-degradation response was observed during the low-rate passive collection.
+
+Signatures authenticate bytes and publisher identity, not harmlessness. No antivirus verdict, benchmark, security score, exhaustive audit or safety guarantee is claimed. Results apply to the recorded artifacts and fixture conditions.
 
 ## Closeout
 
-No target test accounts, target sessions, OAuth grants or pairing tokens have been created. There are no target test sessions to revoke. The disposable VM, evaluation media and guest-only installation credentials remain in use on the Windows laptop. **Lab disposal is pending.** The guest is running Windows setup; Sandboxie installation is pending. Target inputs have not executed. Existing personal sessions, source checkouts and release archives were preserved. Host security protections were not disabled. Public and private evidence are kept separately. GitHub publication uses the trusted host session outside the lab.
+Synthetic session and device credentials were retired by fixture cleanup; all three Sandboxie boxes passed a final retirement sweep. No personal or provider account was used. Both disposable VMs, their guest credentials and lab directories were discarded after evidence export. The task-installed laptop VirtualBox package was removed; the pre-existing KVM installation and personal sessions were preserved. Public publication occurred from the trusted Linux session outside the lab. Deletion is logical disposal, not an attestation of forensic media erasure.

@@ -1,31 +1,37 @@
 # Findings
 
-A confirmed observation establishes the stated fact, not every possible consequence. Advisory severity belongs to the upstream package and is not automatically the severity of this deployment. Priorities below guide owner follow-up; no CVSS score is assigned without validated impact.
+Confirmed facts and locally reproduced behavior are separated from unproven exploitability. Priorities guide owner follow-up; no CVSS score or claim of remote compromise is assigned without evidence.
 
-## Confirmed observations
+## Confirmed observations and bounded flaws
 
-| ID | Observation | Evidence and limit | Recommended action |
+| ID | Result | Evidence and limitation | Recommended action |
 | --- | --- | --- | --- |
-| C-01 | Dependency versions match published advisories | A static inventory query returned 48 distinct advisory records across 20 package/version pairs. Production exposure and exploitability were not established. Some matches concern build tooling or features not found in the reviewed source. | Prioritize runtime dependency triage, upgrade affected components, and verify the deployed inventory in staging. |
-| C-02 | Website CSP is report-only on the two sampled pages | Normal anonymous responses contained a report-only policy and no enforcing CSP header or HTML meta policy. Other security headers were present. This is a defense gap, not evidence of XSS. | Introduce an enforcing policy through a tested rollout and reduce broad script permissions. |
-| C-03 | The reviewed OAuth code flow does not use PKCE | The authorization request and token exchange lack PKCE parameters. The flow is a confidential server client with state and client authentication. No code injection or account takeover was demonstrated. | Add S256 PKCE after confirming provider support for the configured application; preserve state and bind each transaction to its initiating context. |
-| C-04 | The Windows package retains default Electron hardening settings | Static binary inspection found optional package protections disabled and development-oriented capabilities enabled. Remote exploitation was not demonstrated. | Audit required runtime capabilities, disable unused ones, and enable package integrity protections before signing a new build. |
+| C-01 | Dependency versions match published advisories | 48 distinct advisory records across 20 package/version pairs. Some concern build tooling or unused features. Deployed reachability is untested. | Prioritize actual runtime and image-processing dependencies, verify deployed inventory and update affected components in staging. |
+| C-02 | Sampled website CSP is report-only | Two anonymous pages had no enforcing CSP header or meta policy. Other security headers were present. No XSS was demonstrated. | Stage and test an enforcing policy with narrower script permissions. |
+| C-03 | Reviewed confidential OAuth code flow lacks PKCE | State and client authentication are present. Provider configuration and a code-injection attack were not tested. | Add S256 PKCE where supported and preserve transaction binding and state checks. |
+| C-04 | Shipped Electron package retains optional hardening gaps | Static fuse inspection found package-integrity protections disabled and development capabilities enabled. This is not standalone RCE. | Audit required capabilities, apply compatible fuse protections before signing, and retest the resulting artifact. |
+| C-05 | Authentication transaction can complete under a different account context | Actual application routes and database code reproduced the context mismatch with synthetic accounts and a local provider double. Previously tracked as S-01. Attacker feasibility and real-provider behavior remain untested. | Bind pending transactions to their initiating context and intent; retire them on relevant session changes and reject mismatches. |
+| C-06 | Windows filename policy permits nonordinary filesystem semantics | A packaged path helper accepted a synthetic Windows filename case outside an ordinary-file policy. Remote delivery, signed-content abuse and a full installation exploit were not demonstrated. | Define and enforce the intended Windows filename policy and verify it through the real placement path in staging. |
 
-C-01 deserves the earliest private triage. C-03 is a protocol hardening improvement. C-02 and C-04 are defense-in-depth work; the evidence does not support describing them as standalone remote compromises.
+C-01 needs prompt private exposure triage. C-05 deserves transaction-binding remediation and retesting. C-06 is a bounded validation gap; C-02 through C-04 are hardening work with unproven exploit impact. Detailed source locations and reproduction material remain private.
 
-[Electron's security guidance](https://www.electronjs.org/docs/latest/tutorial/security) and [fuse documentation](https://www.electronjs.org/docs/latest/tutorial/fuses) explain the relevant package protections. [RFC 9700](https://www.rfc-editor.org/rfc/rfc9700.html) recommends PKCE for confidential authorization-code clients; [Discord's OAuth documentation](https://docs.discord.com/developers/topics/oauth2) also recommends code flow with PKCE. [MDN's report-only CSP reference](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy-Report-Only) explains that this header does not enforce its policy.
+[Electron security guidance](https://www.electronjs.org/docs/latest/tutorial/security) and [fuse documentation](https://www.electronjs.org/docs/latest/tutorial/fuses) describe the package protections. [RFC 9700](https://www.rfc-editor.org/rfc/rfc9700.html) recommends PKCE for confidential code clients; [Discord's OAuth documentation](https://docs.discord.com/developers/topics/oauth2) also recommends code flow with PKCE. [MDN's report-only CSP reference](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy-Report-Only) explains its non-enforcing behavior.
 
-## Suspicions requiring isolated validation
+## Suspicion with narrowed impact
 
-| ID | Area | Current conclusion |
-| --- | --- | --- |
-| S-01 | Authentication transaction binding | A possible mismatch between an initiated flow and the session present at completion needs controlled account-switch and replay validation. No unauthorized linking was demonstrated. |
-| S-02 | Local discovery boundary | A local discovery handler warrants stricter request validation. Browser reachability and any practical information exposure remain untested. |
+**S-02: local discovery boundary.** A synthetic foreign-authority/origin request received limited discovery metadata without CORS read permission. A native Chromium positive-control test confirmed that another loopback origin could not read that response. No credential disclosure was demonstrated. Public-site browser behavior, DNS rebinding and broader reachability remain untested. Validate authority before dispatch and minimize metadata.
 
-Private evidence describes the relevant paths and validation criteria. This repository deliberately omits request recipes, internal endpoints, payloads, and exploit chains.
+## Other observed behavior
 
-## Positive controls observed
+Offline sign-out reported failure and retained the protected credential. With a synthetic server acknowledgement, sign-out cleared it. This is a confirmed lifecycle behavior, not evidence that real-server revocation failed. Product messaging and recovery should clearly distinguish unsuccessful sign-out from a completed one.
 
-The reviewed paths include renderer isolation, restricted privileged IPC, signed and hashed launcher updates, validated build manifests, OS-backed launcher credential encryption, proof-bound pairing, and server-side account/device checks. Public redirects were not fuzzed. Controls were inspected in source; their behavior under attack remains untested.
+## Controls validated within the fixture scope
 
-The Steam integration uses OpenID 2.0. It is not OpenID Connect, so an OIDC ID-token checklist or an OAuth PKCE requirement cannot simply be applied to it. Its direct assertion verification delegates replay enforcement to the provider under [OpenID 2.0 section 11.3](https://openid.net/specs/openid-authentication-2_0.html#verify_nonce). Provider replay behavior was not tested.
+- Update signature, tamper, platform, version-selection, download hash and invalid-format refusal checks passed.
+- Fourteen Windows traversal/absolute-path cases were refused, and cache corruption, truncation and overflow checks passed. A junction setup could not be established under the lab restrictions and remains untested.
+- Privileged IPC rejected 100 synthetic foreign/child-frame events across 50 handlers. Native Electron also refused an unrelated renderer while allowing its positive control. The actual application composition retained renderer isolation and a loopback listener.
+- Native protected storage, restoration, corrupt-data handling and acknowledged sign-out checks passed. Unavailable encryption failed closed in a separate module fixture.
+- Website state mismatch, return destinations, identity conflicts, email non-linking, logout, pairing proof, single-use concurrency, ownership, revocation and selected live permission checks passed. The account-context case instead established C-05.
+- Removing the actual session-revocation and pairing-proof guards caused the intended assertions to fail. Restoring each source file restored passing results.
+
+Steam uses OpenID 2.0, not OpenID Connect. Direct verification delegates replay rejection to the provider under [OpenID 2.0 section 11.3](https://openid.net/specs/openid-authentication-2_0.html#verify_nonce). Local verifier checks passed; provider replay enforcement was not tested.

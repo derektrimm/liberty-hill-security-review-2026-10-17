@@ -1,33 +1,40 @@
-# Windows laptop lab record
+# Windows lab record
 
-Status at 2026-10-18 19:27 UTC: the owner's laptop is reachable and Windows setup is progressing in the disposable VM. Sandboxie has not yet been installed. No launcher or website code has executed, and runtime containment remains **unverified**. This is an interim record, not a completed runtime assessment.
+The offline runtime review completed on October 18, 2026 UTC. Both disposable labs were discarded after reviewed evidence export. No sandbox guarantees safety.
 
-## Completed work
+## Laptop attempt
 
-- The official launcher 6.17.62 installer and extracted main executable retained their recorded hashes after transfer. Windows `Get-AuthenticodeSignature` returned `Valid` for both, identifying Liberty Hill Studios LLC and a Microsoft timestamp signer. Fresh online revocation retrieval was not independently attested.
-- A static inventory recorded 38 packaged native executables and libraries, including their hashes, available version resources and certificate chains. An offline verifier accepted 71 embedded signatures with strict timestamp verification. This does not establish advisory reachability or fresh revocation status.
-- VirtualBox 7.2.20 build 175154 came from Oracle's official distribution. Its published SHA-256 matched and Windows reported its Oracle signature valid. USB and bridged/host-only network driver features were not requested.
-- The current VM has 8 GiB RAM, three virtual CPUs, Secure Boot and an emulated TPM. Its PIIX3 configuration exposes eight network-adapter slots; all eight are `none`. The initial ICH9 configuration exposed 36 slots, also detached.
-- Shared folders, clipboard including file transfers, drag/drop, USB controllers, PCI passthrough, remote display, audio, serial and parallel ports were disabled. Nested virtualization and 3D acceleration were disabled. Configuration was rechecked after changing the chipset.
-- Sandboxie Plus 1.18.8 was acquired from its official release. Its release digest matched and Windows reported its signature valid. Installation is pending Windows setup completion.
-- Only guest-specific random installation credentials were generated. No personal account, live target token, SSH key or publishing credential was copied into the guest.
+The authorized laptop was reachable and supplied native signature validation. A disposable VirtualBox 7.2.20 guest used official Windows evaluation media, no network adapters, and disabled sharing, clipboard, drag/drop, USB/PCI passthrough and audio. Earlier 26H2 attempts failed or stalled; an LTSC 2024 attempt installed to disk but remained at 42 percent in its later setup phase. No target code executed on the laptop. No cause was established for the startup failures. Host security protections were not disabled and the host was not rebooted.
 
-Configuration inspection does not establish that isolation works. Guest-side network checks, Sandboxie file/registry canaries, reduced-rights checks and target execution gates must pass before running the application. No online guest networking has been enabled.
+The incomplete guest was paused while a separate KVM guest was prepared. After evidence export, the laptop VM, disk and lab files were deleted. The task-installed VirtualBox package was then removed with exit code zero, no remaining executable/package registration, and no reboot requested. No pre-existing VM was removed.
 
-## Windows startup results
+## Successful offline Windows guest
 
-| Attempt | Guest configuration | Observed result |
-| --- | --- | --- |
-| 1 | 26H2 evaluation, ICH9, four virtual CPUs, default paravirtualization | Windows stopped during initialization with bug check `0x5C`, `HAL_INITIALIZATION_FAILED`. |
-| 2 | Same media, ICH9, four CPUs, paravirtualization `none` | Startup did not reach installation during observation; the guest disk remained empty. |
-| 3 | Same media, ICH9, three CPUs, paravirtualization `none` | The start command was interrupted by loss of laptop connectivity. On reconnection, the VM was powered off. The interruption's cause is unknown. |
-| 4 | Same media, ICH9, three CPUs, paravirtualization `none` | Startup did not reach installation during observation. |
-| 5 | Same media, PIIX3, four CPUs, default paravirtualization | Guest kernel and storage initialization appeared in the log, but no installed OS was established before switching evaluation media. |
-| 6 | LTSC 2024 evaluation, PIIX3, four CPUs, default paravirtualization | Guest kernel and storage initialized; no installation progress was established during this attempt. |
-| 7 | LTSC 2024 evaluation, PIIX3, one CPU | Windows Setup refused the configuration's system requirements. No requirement bypass was used. |
-| 8 | LTSC 2024 evaluation, PIIX3, three CPUs, default paravirtualization | Windows Setup began installing and the virtual disk grew. Installation is still in progress at this record's timestamp. |
+- QEMU 11.1.2 with KVM, two virtual CPUs, 6 GiB memory and a disposable 64 GiB virtual disk.
+- Windows 11 Enterprise LTSC 2024 evaluation, build 26100.1742. Guest checks confirmed Secure Boot and a ready TPM. Firmware revocation-list freshness was not independently attested.
+- Sandboxie Plus 1.18.8 with 5.73.8 driver/service components. Native signature checks returned Valid for the inspected installed components.
+- No guest network adapter, shared folder, clipboard integration, USB controller, device passthrough, audio or guest agent. No personal account, production secret or publishing credential entered the guest.
+- QEMU ran in separate mount/network namespaces, without capabilities, with seccomp and no host home directory or external route. Host checks passed before guest continuation.
+- Guest checks found no hardware network adapter, default route or mapped share. Sandboxie file/registry virtualization, dropped administrator rights and injected-module canaries passed before execution and again for fresh test boxes.
+- Inputs arrived on read-only optical media. Allowlisted reports left through an output-only serial log with checked sizes and SHA-256 hashes. An authenticated console was visible in the browser; clipboard transfer was disabled.
 
-These are lab startup observations, not launcher defects. No cause is established for the earlier laptop connectivity loss. Host virtualization-based security and other protections were not weakened, and the host was not rebooted.
+## Reviewed outcomes
+
+| Group | Result |
+| --- | --- |
+| Packaged launcher modules | 17 groups passed, two bounded behaviors observed, one junction prerequisite unavailable |
+| Native Electron fixtures | Six groups passed; offline sign-out retention observed |
+| Website baseline | 38 cases completed: 37 protective-control cases and one account-context-switch observation |
+| Negative controls | Removed revocation/proof guards caused intended failures; restored suites passed |
+| Official installer | Reviewed executable and archive hashes matched after boxed installation; launcher process and loopback listener observed |
+| Uninstall | Child completion awaited; executable and application archive absent in the sandboxed view |
+| Retirement | All three boxes verified clean of retained synthetic credentials and fixture database directories |
+
+Early runs exposed test-harness problems: an obsolete VM-name assertion, missing theme resource, missing migration bookkeeping, read-only fixture replacement, GUI-tool output capture and premature process-lifecycle observations. These were corrected without changing production source or weakening containment. Failed attempts remain in private evidence and are not product findings.
+
+## Disposal
+
+The KVM guest was shut down and its service stopped after reviewed evidence export. Its virtual disk, TPM state, guest credentials and lab directory were deleted. Temporary console/tunnel services and local credential-bearing media were removed. The existing hypervisor installation was preserved. No online guest networking was enabled at any point. Logical deletion does not imply forensic secure erasure.
 
 ## Media identity
 
@@ -39,7 +46,3 @@ These are lab startup observations, not launcher defects. No cause is establishe
 | Sandboxie Plus 1.18.8 x64 installer | `f27078ff74a07906fd51476079e1a7a8f5e20c8bb75a9d2ae86169d47179ae76` | Official release digest and native signature |
 
 Acquisition references: [Oracle downloads](https://download.virtualbox.org/virtualbox/7.2.20/), [Microsoft evaluation media](https://www.microsoft.com/en-us/evalcenter/download-windows-11-enterprise), and [Sandboxie Plus 1.18.8](https://github.com/sandboxie-plus/Sandboxie/releases/tag/v1.18.8). Microsoft's [bug check reference](https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/bug-check-0x5c--hal-initialization-failed) describes `0x5C`; it does not diagnose this host.
-
-## Pending validation and disposal
-
-Every dynamic security check remains untested. Prepared private checks cover update integrity, Windows file placement, IPC, credentials, local listeners, authentication transactions, pairing and session revocation. Prepared checks are not results. No target account or session has been created. The VM and lab files remain in use for setup; disposal has not occurred. Private evidence and test inputs remain outside this public repository. No sandbox guarantees safety.
