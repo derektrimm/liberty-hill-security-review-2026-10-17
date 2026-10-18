@@ -8,7 +8,7 @@ Live collection used ordinary anonymous HTTPS GET requests for the homepage, log
 
 The installer was read as data. Its embedded application archive and main executable were inspected with static tools. No installer, launcher, project script, dependency lifecycle hook, test suite, launcher child process, or downloaded game was executed. The packaged code comparison covered 46 CommonJS files and one ES module, plus two matching JSON files. Packaged metadata had the expected build-time reduction; a generated public-key record matched the source pin. Bundled products and compiled UI assets were not fully reproduced from source.
 
-SHA-256 fingerprints identify collected artifacts. Ed25519 verification checked the signed update metadata. Authenticode verification checked file digests, signatures, certificate chains, and strict timestamp countersignatures using an offline verifier. Native Windows trust-policy checks and online revocation checks were not performed.
+SHA-256 fingerprints identify collected artifacts. Ed25519 verification checked the signed update metadata. Authenticode verification checked file digests, signatures, certificate chains, and strict timestamp countersignatures using an offline verifier. A later static `Get-AuthenticodeSignature` check on the owner's trusted Windows laptop returned `Valid` for the official installer, with Liberty Hill Studios LLC as signer and a Microsoft timestamp signer. This did not execute the installer. Fresh online revocation retrieval was not independently attested. The native check for the extracted main executable was interrupted by loss of laptop connectivity and remains untested.
 
 ## Static review
 
@@ -18,6 +18,6 @@ Four lockfiles supplied a dependency inventory. Only public registry package nam
 
 ## Execution boundary
 
-A disposable Windows VM containing Sandboxie Plus could not be verified. Target execution stopped at that boundary. No shared build guest was substituted. The browser was used to display official documentation and this report, without signing into the target or executing its application in a personal browser.
+A new disposable VM was provisioned on the owner's Windows laptop using official, hash-verified Windows evaluation media and VirtualBox. All virtual network adapters were absent; shared folders, clipboard, drag/drop, USB and other device passthrough were disabled. These are recorded hypervisor settings, not a completed containment test. Windows startup failed before Sandboxie Plus could be installed or tested. A third boot attempt was interrupted by loss of host connectivity. Target execution stopped at that boundary. See [the lab record](LAB-VALIDATION.md). No personal account or publishing credential was placed in the guest. The browser displayed official documentation and this report, without signing into the target or executing its application in a personal browser.
 
 Any continuation requires an offline disposable Windows guest, Sandboxie Plus inside it, disabled sharing/clipboard/device passthrough, and measured containment. Before network access, enforce denial of host, LAN, VPN, metadata-service, and other non-approved destinations outside the guest's control, including IPv6 and DNS-rebinding cases. Use synthetic data and owned test accounts. A sandbox does not guarantee safety.

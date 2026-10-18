@@ -31,7 +31,17 @@
     "certificate_valid_from_utc": "2026-10-16T14:46:47Z",
     "certificate_valid_to_utc": "2026-10-19T14:46:47Z",
     "online_revocation": "untested",
-    "windows_native_trust_policy": "untested"
+    "windows_native_trust_policy": "installer: Valid; extracted main executable: untested",
+    "installer_native_windows": {
+      "captured_windows_clock_utc": "2026-10-18T01:33:11.6782107Z",
+      "status": "Valid",
+      "signature_type": "Authenticode",
+      "signer": "Liberty Hill Studios LLC",
+      "signer_certificate_sha1_thumbprint": "384EE3AF17F27295A8467B10DA1A6DA407CD9863",
+      "timestamp_signer": "Microsoft Public RSA Time Stamping Authority",
+      "fresh_revocation_retrieval_independently_attested": false,
+      "method": "static Get-AuthenticodeSignature on trusted Windows host; target not executed"
+    }
   },
   "main_executable": {
     "sha256": "1ebf52b54c0f3609657a999e477c44d3719e92c83ff5c7e5efa426a048faab06",
@@ -96,6 +106,10 @@
     "invasive_tests_performed": false,
     "target_accounts_used": 0,
     "test_sessions_created": 0,
-    "lab_created": false
+    "lab_created": true,
+    "lab_disposal": "pending: laptop unreachable; VM and lab-file deletion not verified",
+    "lab_summary": "LAB-VALIDATION.md",
+    "sandboxie_installed": false,
+    "runtime_checks_status": "untested: guest setup failed, then host became unreachable"
   }
 }
