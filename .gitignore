@@ -1,0 +1,11 @@
+# This repository accepts reviewed report text and sanitized JSON only.
+*.exe
+*.dll
+*.asar
+*.7z
+*.zip
+*.pem
+*.key
+.env*
+private/
+raw/

@@ -1,0 +1,101 @@
+{
+  "assessment_date_local": "2026-10-17",
+  "timezone": "America/Chicago",
+  "capture_date_utc": "2026-10-18",
+  "scope": {
+    "website": "https://libertyhillstudio.com/",
+    "store_product_id": "XP9MNT3Z852FML"
+  },
+  "installer": {
+    "version": "6.17.62",
+    "retrieved_utc": "2026-10-18T00:15:14.274404+00:00",
+    "url": "https://libertyhillstudio.com/api/play/launcher/windows/6.17.62/Liberty-Hill-Studios-Launcher-6.17.62.exe",
+    "http_status": 200,
+    "bytes": 413293424,
+    "sha256": "334e6c9439f412562785e93b5cc03dfc1d2098c7f367a382e95f0f7e204a76c4",
+    "tls_verify_result": 0,
+    "redirect_count": 0,
+    "matches_signed_feed": true,
+    "executed": false
+  },
+  "store_binary_equivalence": "unverified",
+  "signatures": {
+    "feed_algorithm": "Ed25519",
+    "feed_verified": true,
+    "installer_authenticode_offline_verified": true,
+    "installer_timestamp_utc": "2026-10-17T22:49:12.233Z",
+    "main_executable_authenticode_offline_verified": true,
+    "main_executable_timestamp_utc": "2026-10-17T22:47:38.260Z",
+    "publisher": "Liberty Hill Studios LLC",
+    "installer_leaf_certificate_sha256": "63e0625b48bf7fcd136c36fe67ad4b61e1e503990654737ca13a1c560e94fd0a",
+    "certificate_valid_from_utc": "2026-10-16T14:46:47Z",
+    "certificate_valid_to_utc": "2026-10-19T14:46:47Z",
+    "online_revocation": "untested",
+    "windows_native_trust_policy": "untested"
+  },
+  "main_executable": {
+    "sha256": "1ebf52b54c0f3609657a999e477c44d3719e92c83ff5c7e5efa426a048faab06",
+    "bytes": 246045488,
+    "runtime_markers": {
+      "Electron": "44.4.5",
+      "Chromium": "152.0.7977.130",
+      "method": "static ASCII marker scan; no binary execution"
+    }
+  },
+  "application_archive": {
+    "sha256": "2e4e81d58e15cdbd2efe6d6daa12b6281b83ad11a6c841f8e7abc5f4bfab8bb4",
+    "packaged_code_files_matching_release_source": 47,
+    "additional_matching_json_files": 2,
+    "reproducible_build_proven": false
+  },
+  "tools": {
+    "signify": "0.8.1",
+    "openssl": "OpenSSL 3.6.4 25 Aug 2026 (Library: OpenSSL 3.6.4 25 Aug 2026)",
+    "7zip": "26.03"
+  },
+  "website_observations": {
+    "/": {
+      "response_body_sha256": "5ca8556b3a8b53bf6ca4c0df261c2ece6af421b03517c6e3d8afe06807c971b6",
+      "http_status": 200,
+      "enforcing_csp_header_present": false,
+      "enforcing_csp_meta_present": false,
+      "report_only_csp_present": true,
+      "hsts_present": true,
+      "nosniff_present": true,
+      "frame_options": "SAMEORIGIN",
+      "capture_metadata_file_retained_privately": true,
+      "captured_utc": "2026-10-18T00:07:51.860085+00:00",
+      "response_headers_sha256": "9b43d56f084579aca5022ba0373ad76d5f7679ffc309ed31016f5be0a0fe7f0f"
+    },
+    "/login": {
+      "response_body_sha256": "9b80c2dd9761864d0b3006584076dcc0a4a042292e5a76416fe5257fafe46230",
+      "http_status": 200,
+      "enforcing_csp_header_present": false,
+      "enforcing_csp_meta_present": false,
+      "report_only_csp_present": true,
+      "hsts_present": true,
+      "nosniff_present": true,
+      "frame_options": "SAMEORIGIN",
+      "capture_metadata_file_retained_privately": true,
+      "captured_utc": "2026-10-18T00:08:44.893383+00:00",
+      "response_headers_sha256": "dcc25a4cc5afbaf3822aa7d6a1be3d65f58334d12867af3ebdbf03a4fa59124f"
+    }
+  },
+  "dependency_correlation": {
+    "inventory_entries": 777,
+    "lockfiles": 4,
+    "unique_public_package_versions_queried": 676,
+    "matched_package_versions": 20,
+    "distinct_advisory_records": 48,
+    "confirmed_exploitable_deployment_flaws": 0,
+    "meaning": "Zero demonstrated exploits does not mean zero vulnerabilities."
+  },
+  "execution": {
+    "containment_verified": false,
+    "target_code_executed": false,
+    "invasive_tests_performed": false,
+    "target_accounts_used": 0,
+    "test_sessions_created": 0,
+    "lab_created": false
+  }
+}
